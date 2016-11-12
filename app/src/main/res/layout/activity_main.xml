@@ -11,14 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Heading"
+        android:text="Sweet Music Player"
         android:textSize="35sp" />
 
     <TextView
         android:id="@+id/subHeadingView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/headingView"
+        android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:text="Sub Heading"
         android:textColor="#ff7aff24"
@@ -28,7 +28,7 @@
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_below="@+id/subHeadingView"
+        android:layout_below="@+id/headingView"
         android:layout_centerHorizontal="true"
         android:src="@drawable/abc" />
 
@@ -52,7 +52,7 @@
             android:id="@+id/pauseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  ||  "
+            android:text="  \u25a0  "
             android:textSize="30sp"
             android:onClick="pauseSong"/>
 
@@ -60,7 +60,7 @@
             android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="   >  "
+            android:text="   \u25ba  "
             android:textSize="30sp"
             android:onClick="playSong"/>
 
@@ -81,7 +81,11 @@
         android:layout_alignEnd="@+id/buttonLayout"
         android:layout_alignLeft="@+id/buttonLayout"
         android:layout_alignRight="@+id/buttonLayout"
-        android:layout_alignStart="@+id/buttonLayout" />
+        android:layout_alignStart="@+id/buttonLayout"
+        android:thumbTint="#ff9900"
+        android:progressTint="#00ff00"
+        android:background = "#eeeeee"
+        />
 
     <TextView
         android:id="@+id/startTimeView"
@@ -90,15 +94,14 @@
         android:layout_above="@+id/seekBar"
         android:layout_toLeftOf="@+id/seekBar"
         android:layout_toStartOf="@+id/seekBar"
-        android:text="Small Text"
+        android:text="0 min, 0 sec"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/songNameView"
+        android:id="@+id/songArtistView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/startTimeView"
-        android:layout_alignBottom="@+id/startTimeView"
+        android:layout_below="@+id/subHeadingView"
         android:layout_centerHorizontal="true"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -110,6 +113,6 @@
         android:layout_above="@+id/seekBar"
         android:layout_toEndOf="@+id/seekBar"
         android:layout_toRightOf="@+id/seekBar"
-        android:text="Small Text"
+        android:text="0 min, 0 sec"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 </RelativeLayout>
