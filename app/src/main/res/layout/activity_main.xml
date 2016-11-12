@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tobincorporated.musicplayerpage1.MainActivity">
-
+<!--   http://unicode-table.com/en/
+        https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols-->
     <TextView
         android:id="@+id/headingView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Sweet Music Player"
+        android:text="\u266b Sweet Music Player \u266b"
         android:textSize="35sp" />
 
     <TextView
@@ -52,7 +53,7 @@
             android:id="@+id/pauseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  \u25a0  "
+            android:text="  ||  "
             android:textSize="30sp"
             android:onClick="pauseSong"/>
 

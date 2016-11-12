@@ -18,6 +18,7 @@ import android.widget.Toast;
 import java.io.FileDescriptor;
 import java.util.concurrent.TimeUnit;
 
+import static android.R.attr.start;
 import static com.tobincorporated.musicplayerpage1.R.id.seekBar;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private Button forwardButtonVar, pauseButtonVar, playButtonVar, backButtonViewVar;
     private ImageView iv;
     private MediaPlayer mediaPlayer;
-    private double startTime = 0;
-    private double finalTime = 0;
+    private double startTimeMS = 0;
+    private double finalTimeMS = 0;
     private Handler myHandler = new Handler();
     private int seekTime=0;
     private int forwardTime = 5000;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mediaPlayer.seekTo((int) seekTime);
-                startTime = seekTime;
+                startTimeMS = seekTime;
             }
         });
 
@@ -92,27 +93,22 @@ public class MainActivity extends AppCompatActivity {
     public void playSong(View view) {
         Toast.makeText(getApplicationContext(), "Playing sound", Toast.LENGTH_SHORT).show();
         mediaPlayer.start();
-        finalTime = mediaPlayer.getDuration();
-        startTime = mediaPlayer.getCurrentPosition();
+        finalTimeMS = mediaPlayer.getDuration();
+        startTimeMS = mediaPlayer.getCurrentPosition();
 
-        if (oneTimeOnly == 0) {
-            seekbar.setMax((int) finalTime);
+
+            seekbar.setMax((int) finalTimeMS);
             oneTimeOnly = 1;
-        }
 
-        endTimeViewVar.setText(String.format("%d min, %d sec",
-                TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
-                TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) finalTime)))
-        );
+        int endMinutes = (int) (finalTimeMS / 1000 / 60);
+        int endSeconds = ((int) (finalTimeMS / 1000)) %60;
+        endTimeViewVar.setText(endMinutes + " min, "+ endSeconds+" sec");
 
-        startTimeViewVar.setText(String.format("%d min, %d sec",
-                TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) startTime)))
-        );
+        int startMinutes =(int) (startTimeMS/1000/60);
+        int startSeconds = ((int)(startTimeMS/1000)) %60;
+        startTimeViewVar.setText(startMinutes + " min, "+ startSeconds+" sec");
 
-        seekbar.setProgress((int) startTime);
+        seekbar.setProgress((int) startTimeMS);
         myHandler.postDelayed(UpdateSongTime, 100);
         pauseButtonVar.setEnabled(true);
         playButtonVar.setEnabled(false);
@@ -128,10 +124,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void skipForward(View view) {
-        int temp = (int) startTime;
-        if ((temp + forwardTime) <= finalTime) {
-            startTime = startTime + forwardTime;
-            mediaPlayer.seekTo((int) startTime);
+        int temp = (int) startTimeMS;
+        if ((temp + forwardTime) <= finalTimeMS) {
+            startTimeMS = startTimeMS + forwardTime;
+            mediaPlayer.seekTo((int) startTimeMS);
             Toast.makeText(getApplicationContext(), "You have Jumped forward 5 seconds", Toast.LENGTH_SHORT);
         } else {
             Toast.makeText(getApplicationContext(), "Cannot jump forward 5 seconds", Toast.LENGTH_SHORT);
@@ -139,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void skipBack(View view) {
-        int temp = (int) startTime;
+        int temp = (int) startTimeMS;
         if ((temp - backwardTime) > 0) {
-            startTime = startTime - backwardTime;
-            mediaPlayer.seekTo((int) startTime);
+            startTimeMS = startTimeMS - backwardTime;
+            mediaPlayer.seekTo((int) startTimeMS);
             Toast.makeText(getApplicationContext(), "You have Jumped backward 5 seconds", Toast.LENGTH_SHORT);
         } else {
             Toast.makeText(getApplicationContext(), "Cannot jump backward 5 seconds", Toast.LENGTH_SHORT);
@@ -151,14 +147,13 @@ public class MainActivity extends AppCompatActivity {
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
-            startTime = mediaPlayer.getCurrentPosition();
-            startTimeViewVar.setText(String.format("%d min, %d sec",
-                    TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                    TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                    toMinutes((long) startTime)))
-            );
-            seekbar.setProgress((int) startTime);
+            startTimeMS = mediaPlayer.getCurrentPosition();
+
+            int startMinutes =(int) (startTimeMS/1000/60);
+            int startSeconds = ((int)(startTimeMS/1000)) %60;
+            startTimeViewVar.setText(startMinutes + " min, "+ startSeconds+" sec");
+
+            seekbar.setProgress((int) startTimeMS);
             myHandler.postDelayed(this, 100);
         }
     };
