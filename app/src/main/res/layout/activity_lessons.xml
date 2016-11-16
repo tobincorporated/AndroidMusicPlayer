@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tobincorporated.musicplayerpage1.MainActivity">
+    <!--   http://unicode-table.com/en/
+            https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols-->
+    <TextView
+        android:id="@+id/view1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="View 1"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/view2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:layout_centerHorizontal="true"
+        android:text="View 2"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/view3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view2"
+        android:layout_centerHorizontal="true"
+        android:text="View 3"
+        android:textSize="36sp" />
+
+
+    <TextView
+        android:id="@+id/view4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="View 4"
+        android:textSize="36sp"/>
+
+    <TextView
+        android:id="@+id/view5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/view4"
+        android:layout_alignTop="@id/view4"
+        android:background="#ddd"
+        android:text="View 5"
+        android:textSize="36sp"/>
+
+    <TextView
+        android:id="@+id/view6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view4"
+        android:layout_alignLeft="@id/view4"
+        android:background="#ddd"
+        android:text="View 6"
+        android:textSize="36sp"/>
+
+    <TextView
+        android:id="@+id/view7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:background="#ddd"
+        android:text="View 7"
+        android:textSize="36sp"/>
+
+    <TextView
+        android:id="@+id/view8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/view7"
+        android:layout_alignParentBottom="true"
+        android:background="#ddd"
+        android:text="View 8"
+        android:textSize="36sp"/>
+
+</RelativeLayout>
