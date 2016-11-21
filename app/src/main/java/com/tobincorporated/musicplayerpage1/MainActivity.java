@@ -64,20 +64,11 @@ public class MainActivity extends AppCompatActivity {
         songNameViewVar.setText(songTitle);
         songArtistViewVar.setText(songArtist);
 
+
         mediaPlayer = MediaPlayer.create(this, R.raw.bargainsinatuxedo);
-        finalTimeMS = mediaPlayer.getDuration();
-        startTimeMS = mediaPlayer.getCurrentPosition();
-
-
         seekbar = (SeekBar) findViewById(seekBar);
-        seekbar.setMax((int) finalTimeMS);
-
         seekbar.setClickable(false);
         pauseButtonVar.setEnabled(false);
-
-        int endMinutes = (int) (finalTimeMS / 1000 / 60);
-        int endSeconds = ((int) (finalTimeMS / 1000)) %60;
-        endTimeViewVar.setText(endMinutes + " min, "+ endSeconds+" sec");
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -92,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mediaPlayer.seekTo( seekTime);
+                mediaPlayer.seekTo((int) seekTime);
                 startTimeMS = seekTime;
             }
         });
@@ -102,9 +93,16 @@ public class MainActivity extends AppCompatActivity {
     public void playSong(View view) {
         Toast.makeText(getApplicationContext(), "Playing sound", Toast.LENGTH_SHORT).show();
         mediaPlayer.start();
+        finalTimeMS = mediaPlayer.getDuration();
+        startTimeMS = mediaPlayer.getCurrentPosition();
 
 
+            seekbar.setMax((int) finalTimeMS);
+            oneTimeOnly = 1;
 
+        int endMinutes = (int) (finalTimeMS / 1000 / 60);
+        int endSeconds = ((int) (finalTimeMS / 1000)) %60;
+        endTimeViewVar.setText(endMinutes + " min, "+ endSeconds+" sec");
 
         int startMinutes =(int) (startTimeMS/1000/60);
         int startSeconds = ((int)(startTimeMS/1000)) %60;
@@ -122,15 +120,6 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.pause();
         pauseButtonVar.setEnabled(false);
         playButtonVar.setEnabled(true);
-    }
-
-    public void stopSong(View view) {
-        Toast.makeText(getApplicationContext(), "Pausing sound", Toast.LENGTH_SHORT).show();
-        mediaPlayer.pause();
-        mediaPlayer.seekTo(0);
-        pauseButtonVar.setEnabled(false);
-        playButtonVar.setEnabled(true);
-        Toast.makeText(getApplicationContext(), "STOP!", Toast.LENGTH_SHORT).show();
     }
 
 

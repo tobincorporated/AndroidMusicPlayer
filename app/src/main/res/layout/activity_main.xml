@@ -25,15 +25,6 @@
         android:textColor="#ff7aff24"
         android:textSize="35sp" />
 
-    <TextView
-        android:id="@+id/songArtistView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/subHeadingView"
-        android:layout_centerHorizontal="true"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
@@ -58,20 +49,11 @@
             android:textSize="30sp"
             android:onClick="skipBack"/>
 
-
-
-        <Button
-            android:id="@+id/stopButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  \u25a0  "
-            android:textSize="30sp"
-            android:onClick="stopSong"/>
         <Button
             android:id="@+id/pauseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  ||   "
+            android:text="  ||  "
             android:textSize="30sp"
             android:onClick="pauseSong"/>
 
@@ -111,18 +93,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/seekBar"
-        android:layout_alignLeft="@+id/buttonLayout"
+        android:layout_toLeftOf="@+id/seekBar"
+        android:layout_toStartOf="@+id/seekBar"
         android:text="0 min, 0 sec"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-
+    <TextView
+        android:id="@+id/songArtistView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/subHeadingView"
+        android:layout_centerHorizontal="true"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/endTimeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/seekBar"
-        android:layout_alignRight="@+id/buttonLayout"
+        android:layout_toEndOf="@+id/seekBar"
+        android:layout_toRightOf="@+id/seekBar"
         android:text="0 min, 0 sec"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 </RelativeLayout>
