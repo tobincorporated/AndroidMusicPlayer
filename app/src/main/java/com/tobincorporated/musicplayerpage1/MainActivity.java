@@ -116,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.stop();
         mediaPlayer = MediaPlayer.create(this, Integer.parseInt(songID));
         mediaPlayer.seekTo(0);
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                playNextSong();
+
+            }
+        });
 
         playSongNow();
 
@@ -193,6 +199,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nextSongClick(View view){
+        playNextSong();
+    }
+
+    private void playNextSong(){
 
         int[] songIDs = SongPicker.songIDs;
         int songIndex = 0;
