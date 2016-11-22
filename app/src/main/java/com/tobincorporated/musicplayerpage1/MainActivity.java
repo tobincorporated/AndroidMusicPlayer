@@ -1,5 +1,6 @@
 package com.tobincorporated.musicplayerpage1;
 
+import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -19,13 +20,15 @@ import java.io.FileDescriptor;
 import java.util.concurrent.TimeUnit;
 
 import static android.R.attr.start;
+import static android.R.id.message;
 import static com.tobincorporated.musicplayerpage1.R.id.seekBar;
+import static com.tobincorporated.musicplayerpage1.SongPicker.songIDs;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button forwardButtonVar, pauseButtonVar, playButtonVar, backButtonViewVar;
+    private Button forwardButtonVar, pauseButtonVar, playButtonVar, backButtonViewVar, stopButtonVar;
     private ImageView iv;
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private double startTimeMS = 0;
     private double finalTimeMS = 0;
     private Handler myHandler = new Handler();
@@ -34,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
     private int backwardTime = 5000;
     private SeekBar seekbar;
     private TextView startTimeViewVar, endTimeViewVar, songArtistViewVar, songNameViewVar;
-    public static int oneTimeOnly = 0;
     private String songTitle;
     private String songArtist;
     MediaMetadataRetriever songInfo = new MediaMetadataRetriever();
+    Intent thisIntent;
+    String songID;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         forwardButtonVar = (Button) findViewById(R.id.forwardButton);
         pauseButtonVar = (Button) findViewById(R.id.pauseButton);
         playButtonVar = (Button) findViewById(R.id.playButton);
+        stopButtonVar = (Button) findViewById(R.id.stopButton);
         backButtonViewVar = (Button) findViewById(R.id.backButtonView);
         iv = (ImageView) findViewById(R.id.imageView);
         startTimeViewVar = (TextView) findViewById(R.id.startTimeView);
@@ -55,7 +59,11 @@ public class MainActivity extends AppCompatActivity {
         songArtistViewVar = (TextView) findViewById(R.id.songArtistView);
         songNameViewVar=(TextView) findViewById(R.id.subHeadingView);
 
-        Uri mediaPath = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.bargainsinatuxedo);
+        thisIntent = getIntent();
+        songID = thisIntent.getStringExtra("songMessage");
+        Toast.makeText(getApplicationContext(), songID, Toast.LENGTH_SHORT).show();
+
+        Uri mediaPath = Uri.parse("android.resource://" + getPackageName() + "/" + songID);
         songInfo.setDataSource(this, mediaPath);
 
         songTitle = songInfo.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
@@ -63,9 +71,13 @@ public class MainActivity extends AppCompatActivity {
 
         songNameViewVar.setText(songTitle);
         songArtistViewVar.setText(songArtist);
+        if( mediaPlayer!=null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
 
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.bargainsinatuxedo);
+        mediaPlayer = MediaPlayer.create(this, Integer.parseInt(songID));
         seekbar = (SeekBar) findViewById(seekBar);
         seekbar.setClickable(false);
         pauseButtonVar.setEnabled(false);
@@ -88,17 +100,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        playSongNow();
+
     }
 
-    public void playSong(View view) {
+    private void playNewSong(String songID){
+        Uri mediaPath = Uri.parse("android.resource://" + getPackageName() + "/" + songID);
+        songInfo.setDataSource(this, mediaPath);
+
+        songTitle = songInfo.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+        songArtist = songInfo.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+
+        songNameViewVar.setText(songTitle);
+        songArtistViewVar.setText(songArtist);
+        mediaPlayer.stop();
+        mediaPlayer = MediaPlayer.create(this, Integer.parseInt(songID));
+        mediaPlayer.seekTo(0);
+
+        playSongNow();
+
+    }
+
+    public void playSong(View view){
+        playSongNow();
+    }
+
+    public void playSongNow() {
         Toast.makeText(getApplicationContext(), "Playing sound", Toast.LENGTH_SHORT).show();
         mediaPlayer.start();
         finalTimeMS = mediaPlayer.getDuration();
         startTimeMS = mediaPlayer.getCurrentPosition();
+        seekbar.setMax((int) finalTimeMS);
 
-
-            seekbar.setMax((int) finalTimeMS);
-            oneTimeOnly = 1;
 
         int endMinutes = (int) (finalTimeMS / 1000 / 60);
         int endSeconds = ((int) (finalTimeMS / 1000)) %60;
@@ -110,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
         seekbar.setProgress((int) startTimeMS);
         myHandler.postDelayed(UpdateSongTime, 100);
+        stopButtonVar.setEnabled(true);
         pauseButtonVar.setEnabled(true);
         playButtonVar.setEnabled(false);
     }
@@ -119,6 +153,15 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Pausing sound", Toast.LENGTH_SHORT).show();
         mediaPlayer.pause();
         pauseButtonVar.setEnabled(false);
+        playButtonVar.setEnabled(true);
+    }
+
+    public void stopSong(View view) {
+        Toast.makeText(getApplicationContext(), "Pausing sound", Toast.LENGTH_SHORT).show();
+        mediaPlayer.pause();
+        mediaPlayer.seekTo(0);
+        pauseButtonVar.setEnabled(false);
+        stopButtonVar.setEnabled(false);
         playButtonVar.setEnabled(true);
     }
 
@@ -145,6 +188,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void backSongClick(View view){
+    mediaPlayer.seekTo(0);
+    }
+
+    public void nextSongClick(View view){
+
+        int[] songIDs = SongPicker.songIDs;
+        int songIndex = 0;
+
+        for(int i =0; i<songIDs.length; i++){
+            if(Integer.parseInt(songID)==songIDs[i]){
+                songIndex = i;
+            }
+        }
+        songIndex++;
+        if(songIndex > songIDs.length-1) {
+            songIndex = 0;
+        }
+
+        songID = String.valueOf(songIDs[songIndex]);
+        String message = songID;
+        playNewSong(songID);
+//
+//        Intent launchSongPlayer = new Intent(this, MainActivity.class);
+//        launchSongPlayer.putExtra("songMessage", message);
+//        startActivity(launchSongPlayer);
+    }
+
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
             startTimeMS = mediaPlayer.getCurrentPosition();
@@ -154,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
             startTimeViewVar.setText(startMinutes + " min, "+ startSeconds+" sec");
 
             seekbar.setProgress((int) startTimeMS);
+
             myHandler.postDelayed(this, 100);
         }
     };

@@ -42,18 +42,33 @@
         android:orientation="horizontal">
 
         <Button
+
+            android:id="@+id/skipBackButtonView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="|&lt;&lt;"
+            android:textSize="30sp"
+            android:onClick="backSongClick"/>
+        <Button
             android:id="@+id/backButtonView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="&lt;&lt;"
             android:textSize="30sp"
             android:onClick="skipBack"/>
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\u25a0"
+            android:textSize="30sp"
+            android:onClick="stopSong"/>
 
         <Button
             android:id="@+id/pauseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  ||  "
+            android:text="||"
             android:textSize="30sp"
             android:onClick="pauseSong"/>
 
@@ -61,7 +76,7 @@
             android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="   \u25ba  "
+            android:text="\u25ba"
             android:textSize="30sp"
             android:onClick="playSong"/>
 
@@ -69,9 +84,17 @@
             android:id="@+id/forwardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  >>  "
+            android:text=">>"
             android:textSize="30sp"
             android:onClick="skipForward"/>
+
+        <Button
+            android:id="@+id/skipForwardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=">>|"
+            android:textSize="30sp"
+            android:onClick="nextSongClick"/>
     </LinearLayout>
 
     <SeekBar
