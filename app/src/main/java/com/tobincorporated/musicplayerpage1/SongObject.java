@@ -11,7 +11,7 @@ import static android.provider.ContactsContract.Directory.PACKAGE_NAME;
  */
 
 public class SongObject {
-    MediaMetadataRetriever songInfo = new MediaMetadataRetriever();
+
     public int songID;
     public String songTitle;
     public String songArtist;

@@ -16,11 +16,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.util.concurrent.TimeUnit;
 
 import static android.R.attr.start;
 import static android.R.id.message;
+import static android.os.Build.VERSION_CODES.M;
 import static com.tobincorporated.musicplayerpage1.R.id.seekBar;
 import static com.tobincorporated.musicplayerpage1.SongPicker.songIDs;
 
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private String songArtist;
     MediaMetadataRetriever songInfo = new MediaMetadataRetriever();
     Intent thisIntent;
-    String songID;
+    int songNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,9 @@ public class MainActivity extends AppCompatActivity {
         songNameViewVar=(TextView) findViewById(R.id.subHeadingView);
 
         thisIntent = getIntent();
-        songID = thisIntent.getStringExtra("songMessage");
-        Toast.makeText(getApplicationContext(), songID, Toast.LENGTH_SHORT).show();
+        songNumber = Integer.parseInt( thisIntent.getStringExtra("songMessage"));
 
-        Uri mediaPath = Uri.parse("android.resource://" + getPackageName() + "/" + songID);
+        Uri mediaPath =Uri.fromFile( SongPicker.songList.get(songNumber).songFile) ;
         songInfo.setDataSource(this, mediaPath);
 
         songTitle = songInfo.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
@@ -77,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer = null;
         }
 
-        mediaPlayer = MediaPlayer.create(this, Integer.parseInt(songID));
+
+        mediaPlayer = MediaPlayer.create(this, mediaPath);
         seekbar = (SeekBar) findViewById(seekBar);
         seekbar.setClickable(false);
         pauseButtonVar.setEnabled(false);
@@ -104,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void playNewSong(String songID){
-        Uri mediaPath = Uri.parse("android.resource://" + getPackageName() + "/" + songID);
+    private void playNewSong(File songFile){
+        Uri mediaPath =Uri.fromFile( SongPicker.songList.get(songNumber).songFile) ;
         songInfo.setDataSource(this, mediaPath);
 
         songTitle = songInfo.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         songNameViewVar.setText(songTitle);
         songArtistViewVar.setText(songArtist);
         mediaPlayer.stop();
-        mediaPlayer = MediaPlayer.create(this, Integer.parseInt(songID));
+        mediaPlayer = MediaPlayer.create(this, mediaPath);
         mediaPlayer.seekTo(0);
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
@@ -203,23 +205,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void playNextSong(){
+        int numOfSongs = SongPicker.songList.size();
+        songNumber++;
+        if ( songNumber > numOfSongs-1)
+            songNumber = 0;
 
-        int[] songIDs = SongPicker.songIDs;
-        int songIndex = 0;
 
-        for(int i =0; i<songIDs.length; i++){
-            if(Integer.parseInt(songID)==songIDs[i]){
-                songIndex = i;
-            }
-        }
-        songIndex++;
-        if(songIndex > songIDs.length-1) {
-            songIndex = 0;
-        }
 
-        songID = String.valueOf(songIDs[songIndex]);
-        String message = songID;
-        playNewSong(songID);
+        playNewSong(SongPicker.songList.get(songNumber).songFile);
 
     }
 

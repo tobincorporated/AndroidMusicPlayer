@@ -12,12 +12,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class SongAdapter extends ArrayAdapter<SongObject> {
+public class SongAdapter extends ArrayAdapter<SongObjectF> {
 
     private Context context;
-    private ArrayList<SongObject> values;
+    private ArrayList<SongObjectF> values;
 
-    public SongAdapter(Context context, ArrayList<SongObject> values){
+    public SongAdapter(Context context, ArrayList<SongObjectF> values){
         super(context, -1, values);
         this.context = context;
         this.values = values;
@@ -26,7 +26,7 @@ public class SongAdapter extends ArrayAdapter<SongObject> {
     @Override
     public View getView(int position, View songView, ViewGroup parent) {
 
-        SongObject thisSong = getItem(position);
+        SongObjectF thisSong = getItem(position);
 
         if (songView == null) {
             songView = LayoutInflater.from(getContext()).inflate(R.layout.song_list_item, parent, false);
