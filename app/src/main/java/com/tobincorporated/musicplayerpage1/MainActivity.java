@@ -220,10 +220,7 @@ public class MainActivity extends AppCompatActivity {
         songID = String.valueOf(songIDs[songIndex]);
         String message = songID;
         playNewSong(songID);
-//
-//        Intent launchSongPlayer = new Intent(this, MainActivity.class);
-//        launchSongPlayer.putExtra("songMessage", message);
-//        startActivity(launchSongPlayer);
+
     }
 
     private Runnable UpdateSongTime = new Runnable() {
